@@ -1,7 +1,8 @@
 # iOS Exposition Universelle Application Project
 ### 테이블뷰를 활용한 다양한 국가의 문화유산 리스트를 구현한 앱 프로젝트
+[Ground Rule](https://github.com/GREENOVER/ios-exposition-universelle/blob/main/GroundRule.md)
 ***
-#### What have I done?
+#### What I learned✍️
 - UItableView (Dynamic / Static / Custom)
 - TableCell
 - InterfaceOrientationMask
@@ -13,7 +14,7 @@
 - Codable
 - CodingKey
 
-#### What I learned
+#### What have I done🧑🏻‍💻
 - 테이블뷰의 종류에 대해 학습하고 커스텀하여 테이블 뷰를 상황에 맞게 구현하였다.
 - 셀을 통해 데이터를 담아주었다.
 - 앱 딜리게이트에서 가로세로 기기 회전 변경을 지원하였다.
