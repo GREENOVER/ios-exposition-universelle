@@ -61,7 +61,55 @@
   ```
 
 - 문제점 (2)
-  - AppDelegate에서 화면 전환에 대해 설정을 해주었는데 
+  - 각 화면마다 회전 설정에 대해 동일하게 적용되는 문제
+- 원인
+  - AppDelegate에서 화면 회전 설정에 대해 all로 설정되어 모든 화면에서 동일한 설정이 적용되는 문제
+- 해결방안
+  - 각 화면에서 가로모드를 지원하지 않고 싶을때를 위해 우선 AppDelegate의 딜리게이트를 인스턴스로 생성하여 뷰가 사라지거나 나타날때 회전을 다르게 적용하였다.
+  ```swift
+  private let appDelegate = UIApplication.shared.delegate as! AppDelegate
+  override func viewWillAppear(_ animated: Bool) {
+        self.navigationController?.navigationBar.isHidden = true
+        
+        appDelegate.shouldSupportAllOrientation = UIInterfaceOrientationMask.portrait
+  }
+  override func viewWillDisappear(_ animated: Bool) {
+      self.navigationController?.navigationBar.isHidden = false
+      
+      appDelegate.shouldSupportAllOrientation = UIInterfaceOrientationMask.all
+  }
+  ```
+- 문제점 (3)
+  - 테이블 뷰의 높이가 담긴 데이터에 부합되지 않는 문제
+- 원인
+  - 테이블 뷰의 높이에 대한 자동설정이 없어 지정해준 크기만큼 테이블뷰가 나타나게되어 발생
+- 해결방안
+  - 테이블 뷰의 높이를 오토매틱하게 변경해주는 메서드를 오버라이드하여 추가
+  ```swift
+  override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+      let height = UITableView.automaticDimension
+        
+      return height
+  }
+  ```
+- 문제점 (4)
+  - 사용자가 알아차리는 유의미한 문제는 아니지만 viewWillAppear시 애니메이션 효과에 대해 false로 초기에 주었는데 앱 뷰 전환이 느리다면 어색할것같다.
+  ```swift
+  override func viewWillAppear(_ animated: Bool) {
+      super.viewWillAppear(false)
+  }
+  ```
+- 원인
+  - 애니메이션 효과의 Bool값으로 true / false가 들어가서 애니메이션이 나오는지 마는지를 컨트롤 할 수 있는데 이 값을 false로 주게되면 애니메이션을 하지 않아 발생한다.
+- 해결방안
+  - 처음에는 애니메이션 값을 true로 다 주는것이 현명하지 않을까 싶었는데 시스템에서 정한 값을 주도록 아래와 같이 변경하였다.
+  ```swift
+  override func viewWillAppear(_ animated: Bool) {
+      super.viewWillAppear(animated)
+  }
+  ```
+  파라미터의 인자를 넘겨주는 방식으로 시스템이 정하게 하였으며 궁금해서 디버깅을 통해 기본 애니메이션 설정값을 보았는데 true이다.
+  <img width="924" alt="스크린샷 2021-04-27 오후 1 46 11" src="https://user-images.githubusercontent.com/72292617/116186591-ef63ed80-a75e-11eb-900f-edd19f2647c5.png">
 
 #### Thinking Point🤔
 - 고민점 (1)
