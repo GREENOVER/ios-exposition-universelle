@@ -60,6 +60,8 @@
         }
   ```
 
+- 문제점 (2)
+  - AppDelegate에서 화면 전환에 대해 설정을 해주었는데 
 
 #### Thinking Point🤔
 - 고민점 (1)
@@ -145,8 +147,25 @@
   @main
   class AppDelegate: UIResponder, UIApplicationDelegate {
      var shouldSupportAllOrientation = true
+     func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+         if shouldSupportAllOrientation {
+             return UIInterfaceOrientationMask.all
+         }
+         return UIInterfaceOrientationMask.portrait
+      }
   ```
-
+- 원인 및 대책
+  - 화면 회전에 대해 해당 타입으로 변경하여 앱딜리게이트의 설정 메서드 부분의 코드를 줄였다.'
+  ```swift
+  import UIKit
+  @main
+  class AppDelegate: UIResponder, UIApplicationDelegate {
+    var shouldSupportAllOrientation: UIInterfaceOrientationMask = .all
+    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+         return self.shouldSupportAllOrientation
+     }
+  }
+  ```
 
 
 #### InApp📱
